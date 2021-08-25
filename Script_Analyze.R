@@ -1,0 +1,34 @@
+# INSTALL AND LOAD PACKAGES ################################
+if (!require("pacman")) install.packages("pacman")
+pacman::p_load(pacman,tidyverse,readxl,corrr)
+
+
+# SCRIPT
+my_data <- read_excel("Output_Edited.xlsx")
+head(my_data, 10)
+
+my_data_cor <- my_data %>% 
+  #filter(Primary_Key_Stock == "VIC") %>%
+  select(`Close price`, `Net Trading Value(FDI)`) %>% 
+  correlate()
+my_data_cor
+
+my_data %>%
+  #filter(Primary_Key_Stock == "VIC") %>%
+  ggplot()+
+  geom_point(mapping = aes(x=`Reference price`,
+                           y=`Net Trading Value(FDI)`),
+             stat = "identity")
+
+
+# CLEAN UP #################################################
+# Clear environment
+rm(list = ls()) 
+# Clear packages
+p_unload(all)  # Remove all add-ons
+detach("package:datasets", unload = TRUE)  # For base
+# Clear plots
+dev.off()  # But only if there IS a plot
+# Clear console
+cat("\014")  # ctrl+L
+
