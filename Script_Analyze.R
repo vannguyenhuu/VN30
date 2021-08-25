@@ -3,16 +3,21 @@ if (!require("pacman")) install.packages("pacman")
 pacman::p_load(pacman,tidyverse,readxl,corrr)
 
 
-# SCRIPT
+# SCRIPT ###################################################
+
 my_data <- read_excel("Output_Edited.xlsx")
 head(my_data, 10)
 
+
+# Check correlation between:
+# Close price and Net Trading Value from foreign investors
 my_data_cor <- my_data %>% 
   #filter(Primary_Key_Stock == "VIC") %>%
   select(`Close price`, `Net Trading Value(FDI)`) %>% 
   correlate()
 my_data_cor
 
+# Create a plot
 my_data %>%
   #filter(Primary_Key_Stock == "VIC") %>%
   ggplot()+
